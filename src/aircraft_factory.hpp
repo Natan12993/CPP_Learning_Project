@@ -6,9 +6,6 @@
 class AircraftFactory
 {
 private:
-	// note: textures have to be initialized after initializing glut, so we'll need
-	// our own init here
-
     std::unique_ptr<Aircraft> create_aircraft(const AircraftType& type, Airport* airport);
     std::set<std::string> aircraftsNumbers;
 

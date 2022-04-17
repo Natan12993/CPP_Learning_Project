@@ -16,7 +16,7 @@ private:
     std::vector<Terminal> terminals;
     Tower tower;
     AircraftManager& aircraftManager;
-    int fuel_stock = 0;
+    unsigned int fuel_stock = 0;
     int ordered_fuel = 0;
     int next_refill_time = 0;
 
@@ -73,7 +73,7 @@ public:
             int required_fuel = aircraftManager.get_required_fuel();
             ordered_fuel = (required_fuel < 5000) ? required_fuel : 5000;
             next_refill_time = 100;
-            std::cout << " Fuel stocked : " << fuel_stock << " Fuel ordered : " << ordered_fuel << std::endl;
+            std::cout << " | Fuel stocked : " << fuel_stock << " | Fuel ordered : " << ordered_fuel << std::endl;
         }else
         {
             next_refill_time --;

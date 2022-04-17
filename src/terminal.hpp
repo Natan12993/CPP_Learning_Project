@@ -48,18 +48,14 @@ public:
         }
     }
 
-    void refill_aircraft_if_needed(int& fuel_stock)
+    void refill_aircraft_if_needed(unsigned int& fuel_stock)
     {
         if(current_aircraft == nullptr)
         {
             return;
         }
-
-        //std::cout << "at terminal : " << current_aircraft-> at_terminal() << " is low on fuel " << current_aircraft->is_low_on_fuel() << std::endl;
-        
-        if(current_aircraft->at_terminal() && current_aircraft->is_low_on_fuel())
+        if(current_aircraft->is_on_ground() && current_aircraft->is_low_on_fuel())
         {
-            //std::cout << "at terminal : " << current_aircraft-> at_terminal() << " is low on fuel " << current_aircraft->is_low_on_fuel() << std::endl;
             current_aircraft->refill(fuel_stock);
         }
     }

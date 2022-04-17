@@ -2,9 +2,9 @@
 
 int main(int argc, char** argv)
 {
+    test_generic_points();
     ContextInitialiser contextInitializer = ContextInitialiser {argc, argv};
     TowerSimulation simulation { contextInitializer };
     simulation.launch();
-    //test_generic_points();
     return 0;
 }

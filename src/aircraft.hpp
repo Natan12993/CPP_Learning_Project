@@ -42,7 +42,7 @@ private:
 
     template<bool front>
     void add_waypoint(const Waypoint& wp);
-    bool is_on_ground() const { return pos.z() < DISTANCE_THRESHOLD; }
+
     float max_speed() const {return is_on_ground() ? type.max_ground_speed : type.max_air_speed; }
 
     Aircraft& operator=(const Aircraft&) = delete;
@@ -90,9 +90,11 @@ public:
 
     int get_fuel(){return fuel;}
     bool at_terminal() const {return is_at_terminal;}
-    void refill(int& fuel_stock);
+    void refill(unsigned int& fuel_stock);
 
     friend class Tower;
 
     Aircraft(const Aircraft&) = default;
+
+    bool is_on_ground() const { return pos.z() < DISTANCE_THRESHOLD; }
 };

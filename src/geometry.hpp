@@ -7,6 +7,7 @@
 #include <cmath>
 #include <iostream>
 #include <ostream>
+#include <iomanip>
 
 template<int dimension, typename T>
 class Point
@@ -18,8 +19,8 @@ public:
     Point() {}
 
     template <typename ...K>
-    Point(T first, K&&... args)
-            : values { first, std::forward<K>(args)... }
+    Point(T arg1, K&&... args):
+        values { arg1, std::forward<K>(args)... }
     {
         static_assert(sizeof...(args) + 1 == dimension, "Number of args does not match with the dimension");
     }
@@ -121,7 +122,43 @@ public:
 
         return *this;
     }
+
+    friend std::ostream& operator<<( std::ostream& os, const Point& point) {
+        for(T value : point.values){
+            os << std::fixed << std::setw(5) << std::setprecision(1) << value;
+        }
+        return os;
+    };
 };
+
+using Point2D = Point<2, float>;
+using Point3D = Point<3, float>;
+
+inline void test_generic_points()
+{
+    Point<2, float> p1 { 4.f, 8.f };
+    Point<2, float> p2 { 1.f, 1.f };
+    std::cout << "p1 :" << p1 << " | p2 :" << p2 << std::endl;
+    auto p3 = p1 + p2;
+    p1 += p2;
+    p1 *= 3.f; // ou 3.f, ou 3.0 en fonction du type de Point
+    std::cout << "p1 :" << p1 << " | p2 :" << p2 << " | p3 :" << p3 << std::endl;
+}
+
+// our 3D-coordinate system will be tied to the airport: the runway is parallel to the x-axis, the z-axis
+// points towards the sky, and y is perpendicular to both thus,
+// {1,0,0} --> {.5,.5}   {0,1,0} --> {-.5,.5}   {0,0,1} --> {0,1}
+inline Point2D project_2D(const Point3D& p)
+{
+    return { .5f * p.x() - .5f * p.y(), .5f * p.x() + .5f * p.y() + p.z() };
+}
+
+/*inline std::ostream& operator<<(std::ostream& os, const Point3D& point)
+{
+    os << "x: " << point.x()  << " y: " << point.y() << " z: " << point.z() << '\n';
+    return os;
+
+}*/
 
 /*struct Point3D
 {
@@ -281,30 +318,3 @@ struct Point2D
     }
 };*/
 
-using Point2D = Point<2, float>;
-using Point3D = Point<3, float>;
-
-inline std::ostream& operator<<(std::ostream& os, const Point3D& point)
-{
-    os << "x: " << point.x()  << " y: " << point.y() << " z: " << point.z() << '\n';
-    return os;
-
-}
-
-/*inline void test_generic_points()
-{
-    Point<2, float> p1;
-    Point<2, float> p2;
-    auto p3 = p1 + p2;
-    p1 += p2;
-    p1 *= 3.f; // ou 3.f, ou 3.0 en fonction du type de Point
-    //std::cout << p3 << std::endl;
-}*/
-
-// our 3D-coordinate system will be tied to the airport: the runway is parallel to the x-axis, the z-axis
-// points towards the sky, and y is perpendicular to both thus,
-// {1,0,0} --> {.5,.5}   {0,1,0} --> {-.5,.5}   {0,0,1} --> {0,1}
-inline Point2D project_2D(const Point3D& p)
-{
-    return { .5f * p.x() - .5f * p.y(), .5f * p.x() + .5f * p.y() + p.z() };
-}
